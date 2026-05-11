@@ -25,7 +25,7 @@
     <description>Enterprise IT Asset Management System</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <!--
             The team pinned log4j2 to 2.14.1 to maintain compatibility with
             a set of internal log4j appender plugins developed before the
