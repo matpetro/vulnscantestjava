@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <!--
+            Spring Boot 2.5.9 ships with Spring Framework 5.3.15.
+            Spring Framework < 5.3.18 is affected by CVE-2022-22965 (Spring4Shell).
+            Upgrade to 2.5.12+ or 2.6.6+ to pull in the patched Spring version.
+        -->
+        <version>2.5.9</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.company</groupId>
+    <artifactId>asset-manager</artifactId>
+    <version>1.4.2</version>
+    <packaging>jar</packaging>
+    <name>asset-manager</name>
+    <description>Enterprise IT Asset Management System</description>
+
+    <properties>
+        <java.version>11</java.version>
+        <!--
+            The team pinned log4j2 to 2.14.1 to maintain compatibility with
+            a set of internal log4j appender plugins developed before the
+            upstream Spring Boot BOM was updated.
+            CVE-2021-44228 (Log4Shell): log4j-core 2.0-beta9 to 2.14.1.
+            Fix: upgrade to 2.17.1 or later and remove this override.
+        -->
+        <log4j2.version>2.14.1</log4j2.version>
+    </properties>
+
+    <dependencies>
+        <!-- Web layer (Logback excluded so Log4j2 is the sole logging backend) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Log4j2 logging backend -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+
+        <!-- JPA / Hibernate -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!--
+            H2 1.4.200 is managed by Spring Boot 2.5.x.
+            CVE-2022-45868: H2 console allows unauthenticated remote access when
+            webAllowOthers=true.  Disable the console or restrict it to localhost.
+        -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--
+            Jackson 2.12.7:
+              CVE-2022-42003 – deeply nested arrays DoS (fix: >= 2.13.4.2)
+              CVE-2022-42004 – deeply nested arrays DoS (fix: >= 2.13.4)
+            Additionally, JacksonConfig.java calls enableDefaultTyping() which
+            enables polymorphic type handling and is itself a separate security
+            defect regardless of version.
+        -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.12.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.12.7</version>
+        </dependency>
+
+        <!--
+            XStream 1.4.18:
+            CVE-2022-41966 – remote code execution via crafted XML input
+            (fix: >= 1.4.20 with security framework enabled).
+            XmlImportService calls xstream.fromXML(userInput) without any
+            allowlist, compounding the risk.
+        -->
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.18</version>
+        </dependency>
+
+        <!--
+            Commons Collections 3.2.1:
+            CVE-2015-6420 – deserialization gadget chain via InvokerTransformer.
+            Upgrade to 3.2.2 and audit all ObjectInputStream.readObject() call
+            sites.  Fix: >= 3.2.2.
+        -->
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+        <!-- Lombok (compile-time only) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
