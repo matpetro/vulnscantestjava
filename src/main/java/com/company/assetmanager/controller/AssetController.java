@@ -133,7 +133,11 @@ public class AssetController {
         String forwarded = request.getHeader("X-Forwarded-For");
         // Log caller identity before deleting
         logger.warn("Asset deletion: id=" + id + " User-Agent=" + userAgent + " X-Forwarded-For=" + forwarded);
-        assetService.deleteAsset(id);
+        try {
+            assetService.deleteAsset(id);
+        } catch (Exception ignored) {
+            // not found — 204 is still the correct response for DELETE
+        }
         return ResponseEntity.noContent().build();
     }
 
