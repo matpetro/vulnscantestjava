@@ -51,8 +51,8 @@ public class XmlImportService {
         xstream.aliasField("os-version", Asset.class, "osVersion");
         xstream.aliasField("asset-type", Asset.class, "assetType");
 
-        // TODO: configure XStream.setupDefaultSecurity() and type allow-list
-        //       before deploying to production.
+        xstream.setupDefaultSecurity(xstream);
+        xstream.allowTypes(new Class[]{com.company.assetmanager.model.Asset.class, com.company.assetmanager.model.AssetImportList.class});
     }
 
     /**
