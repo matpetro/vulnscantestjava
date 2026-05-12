@@ -13,7 +13,7 @@
             Spring Framework < 5.3.18 is affected by CVE-2022-22965 (Spring4Shell).
             Upgrade to 2.5.12+ or 2.6.6+ to pull in the patched Spring version.
         -->
-        <version>2.5.9</version>
+        <version>2.6.6</version>
         <relativePath/>
     </parent>
 
@@ -81,16 +81,8 @@
             enables polymorphic type handling and is itself a separate security
             defect regardless of version.
         -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.12.7</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.12.7</version>
-        </dependency>
+
+
 
         <!--
             XStream 1.4.18:

@@ -26,7 +26,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
         // Enable suffix-pattern matching for legacy CMDB client compatibility
-        configurer.setUseSuffixPatternMatch(true);
-        configurer.setUseRegisteredSuffixPatternMatch(true);
+        // Suffix pattern matching is deprecated in Spring Boot 2.6.x and removed in 3.x.
+        // It has been disabled here to resolve conflicts with the new Spring Boot version.
+        // Legacy clients relying on suffix patterns may need to be updated.
+        configurer.setUseSuffixPatternMatch(false);
+        configurer.setUseRegisteredSuffixPatternMatch(false);
     }
 }

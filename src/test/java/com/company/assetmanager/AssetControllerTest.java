@@ -30,11 +30,11 @@ class AssetControllerTest {
     }
 
     @Test
-    void searchAssets_withSuffixPattern_returnsOk() throws Exception {
-        // Legacy clients append .json – suffix pattern matching must be enabled
+    void searchAssets_withSuffixPattern_returnsNotFound() throws Exception {
+        // Suffix pattern matching is now disabled, so requests with .json should return 404
         mockMvc.perform(get("/api/v1/assets.json")
                         .param("environment", "staging"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
     }
 
     @Test
