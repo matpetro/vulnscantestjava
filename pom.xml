@@ -13,7 +13,7 @@
             Spring Framework < 5.3.18 is affected by CVE-2022-22965 (Spring4Shell).
             Upgrade to 2.5.12+ or 2.6.6+ to pull in the patched Spring version.
         -->
-        <version>2.5.9</version>
+        <version>2.5.12</version>
         <relativePath/>
     </parent>
 
